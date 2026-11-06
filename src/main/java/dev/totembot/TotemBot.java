@@ -52,7 +52,6 @@ public class TotemBot implements ClientModInitializer {
 
     // ---------- helpers ----------
     void say(Minecraft mc, String s) {
-        if (mc.player != null) mc.gui.getChat().addMessage(Component.literal("[TotemBot] " + s));
         System.out.println("[TotemBot] " + s);
     }
 
