@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -52,7 +52,7 @@ public class TotemBot implements ClientModInitializer {
 
     // ---------- helpers ----------
     void say(Minecraft mc, String s) {
-        if (mc.player != null) mc.player.displayClientMessage(Component.literal("[TotemBot] " + s), false);
+        if (mc.player != null) mc.gui.getChat().addMessage(Component.literal("[TotemBot] " + s));
         System.out.println("[TotemBot] " + s);
     }
 
@@ -87,11 +87,11 @@ public class TotemBot implements ClientModInitializer {
     }
 
     AbstractContainerMenu openMenu(Minecraft mc) {
-        return mc.screen instanceof AbstractContainerScreen<?> s ? s.getMenu() : null;
+        return mc.gui.screen() instanceof AbstractContainerScreen<?> s ? s.getMenu() : null;
     }
 
     void click(Minecraft mc, AbstractContainerMenu m, int slot) {
-        mc.gameMode.handleInventoryMouseClick(m.containerId, slot, 0, ClickType.PICKUP, mc.player);
+        mc.gameMode.handleContainerInput(m.containerId, slot, 0, ContainerInput.PICKUP, mc.player);
     }
 
     /** best price found in the open GUI: max (orders) or min (AH) over all lore lines */
@@ -178,7 +178,7 @@ public class TotemBot implements ClientModInitializer {
                 var inv = mc.player.inventoryMenu;
                 for (Slot sl : inv.slots) {
                     if (sl.getItem().is(Items.TOTEM_OF_UNDYING)) {
-                        mc.gameMode.handleInventoryMouseClick(inv.containerId, sl.index, 1, ClickType.THROW, mc.player);
+                        mc.gameMode.handleContainerInput(inv.containerId, sl.index, 1, ContainerInput.THROW, mc.player);
                         pause(250, 700);
                         return; // one stack per action, never several in one tick
                     }
