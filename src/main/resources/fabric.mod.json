@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "totembot",
+  "version": "${version}",
+  "name": "TotemBot",
+  "environment": "client",
+  "entrypoints": { "client": ["dev.totembot.TotemBot"] },
+  "depends": { "fabricloader": ">=0.19.3", "minecraft": "26.2", "java": ">=25", "fabric-api": "*" }
+}
